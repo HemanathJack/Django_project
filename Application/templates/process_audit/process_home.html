@@ -1,0 +1,49 @@
+{% extends 'sidebar.html' %}
+
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/audit/process_home.css' %}">
+
+<title>Quality Audit</title>
+
+<h1 style="margin: 20px 20px">Quality Audit</h1><hr>
+
+<div class="vl"></div>
+
+<div class="side-box">
+	<ul class="tree">
+	  <li>
+	    <details open>
+	      <summary>Audit History</summary>
+	      <ul>
+	        <li>
+	          <details open>
+	            <summary>Process Audit</summary>
+	            <ul>
+	              <li>2020</li>
+	              <li>2021</li>
+	              <li>2022</li>
+	            </ul>
+	          </details>
+	        </li>
+	        <li>
+	          <details open>
+	            <summary>Simulator Audit</summary>
+	            <ul>
+	              <li>2021 P1</li>
+	              <li>2021 P2</li>
+	              <li>2022 P1</li>
+	              <li>2022 P2</li>
+	            </ul>
+	          </details>
+	        </li>
+	      </ul>
+	    </details>
+	  </li>
+	  <hr style="margin: 0px;">
+	  <div class="add-new-item" type='button'><i class='bx bxs-plus-square' ></i> Add Item</div>
+	</ul>
+</div>
+
+{% endblock %}

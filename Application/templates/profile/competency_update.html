@@ -1,0 +1,292 @@
+{% extends 'sidebar.html' %}
+
+{% block content %}
+{% load static %}
+{% load custom_tags %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Style CSS Location -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/competency/competency.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/competency/competency_update.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<h1 style="margin: 20px 20px">competency update</h1>
+<hr>
+
+<div class="alert alert-error center-block" id="message" style="visibility: hidden;">
+	<i class='bx bx-error-alt bx-tada' ></i> Some of the field have incorrect value. Please check value mappings and enter correct input.</div>
+
+{% if messages %}
+     {% for message in messages %}
+     <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: absolute; width: 50%; top: 140px; left: 350px; text-align:center;">
+        <strong>{{ message }}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+{% endif %}
+
+{% if user.is_manager %}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-danger" onclick="action({{ modules|refine_modules }}, {{ products|refine_products }})" style="float: right; margin-right: 25px; border-radius: 25px;">
+  <i class='bx bxs-x-square'></i> Delete Items
+</button>
+<button type="button" class="btn btn-success" style="float: right; margin-right: 25px; border-radius: 25px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <i class='bx bxs-plus-square'></i> Add Items
+</button>
+
+<br><br>
+<!-- Modal for add module or products -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Items</h5>
+        <i type="button" style="font-size:20px" class='bx bx-x' data-bs-dismiss="modal" aria-label="Close"></i>
+      </div>
+      <div class="modal-body">
+		   <form role="form" method="POST" action="">
+			   {% csrf_token %}
+			   <label><b><u>ADD MODULE FORM</u></b></label>
+				<div class="mymodule">
+					 {{ module_form.as_p }}
+				</div>
+			   	 <div class="form-group">
+					 <div>
+						<input type="submit" class="btn btn-primary btn-sm" name="submit_module" value="Update Module">
+					 </div>
+				 </div>
+		   </form>
+		  	<hr style="border: 1px dashed black;">
+                <form role="form" method="POST" action="">
+					{% csrf_token %}
+					<label><b><u>ADD PRODUCT FORM</u></b></label>
+					<div class="myproduct">
+						{{ product_form.as_p }}
+					</div>
+                    <div class="form-group">
+                        <div>
+                            <input type="submit"  name='submit_product' class="btn btn-primary btn-sm" value="Update Product">
+                       </div>
+                   </div>
+                </form>
+      </div>
+		<div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+<div id="skill-mapping-table" style="text-align: center;">
+	<p>
+	  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+	    <i class='bx bx-info-circle' style="font-size:20px; vertical-align: middle;"></i> Value Mappings
+	  </button>
+	</p>
+	<div class="collapse" id="collapseExample" style="max-width: 1200px; margin:auto;">
+	  <div class="card card-body">
+	    <table class="table" style="text-align: left;">
+			  <thead>
+			    <tr>
+			      <th scope="col">Competency Level</th>
+			      <th scope="col">Definition</th>
+			      <th scope="col">Description</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr>
+			      <th scope="row" style="text-align: center;">x</th>
+			      <td>Not Applicable</td>
+			      <td>Exempt from skill</td>
+			    </tr>
+			    <tr>
+			      <th scope="row" style="text-align: center;">0</th>
+			      <td>No Experience</td>
+			      <td>No experience and not yet capable</td>
+			    </tr>
+			    <tr>
+			      <th scope="row" style="text-align: center;">1</th>
+			      <td>Beginner</td>
+			      <td>Beginner level experience / require to be skilled and not yet capable</td>
+			    </tr>
+			    <tr>
+			      <th scope="row" style="text-align: center;">2</th>
+			      <td>Practitioner</td>
+			      <td>Practitioner level experience / undergoing trainings and has build some capability</td>
+			    </tr>
+			    <tr>
+			      <th scope="row" style="text-align: center;">3</th>
+			      <td>Competent Practitioner</td>
+			      <td>Competent practitioner, capable and completed training</td>
+			    </tr>
+			    <tr>
+			      <th scope="row" style="text-align: center;">4</th>
+			      <td>Expert</td>
+			      <td>One with the special skill or knowledge representing mastery of a particular subject</td>
+			    </tr>
+			  </tbody>
+			</table>
+	  </div>
+	</div>
+</div>
+<br/>
+
+<button type="button" id="expand-collapse" class="btn btn-link" style="margin-left: 150px;">Expand/Collapse All</button>
+<form method='POST'>
+	{% csrf_token %}
+	<div class="box" id="competency_update">
+		<div class="accordion"  id="accordionPanelsStayOpenExample">
+		  {% for module in modules %}
+		  <div class="accordion-item">
+		    <h2 class="accordion-header" id="panelsStayOpen-{{ module|cut:' ' }}">
+		      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ module|cut:' ' }}" aria-expanded="false" aria-controls="panelsStayOpen-collapse{{ module|cut:' ' }}">
+				  <b>{{ module }}</b>
+				  {% if user.is_manager %}
+			  		<div id="togglee_{{ module|cut:' ' }}" style="display: none;">
+						<a href="{% url 'comp_delete_form' module.id %}" onclick="return confirm('Are you sure you want to delete this module?');" type="button" class="btn btn-link d-flex justify-content-between align-items-center" style="text-align:center;"><i class='bx bxs-x-square bx-tada bx-rotate-90' style='color:#f10f0f; font-size: 24px'></i></a>
+					</div>
+				  {% endif %}
+			  </button>
+				<script>
+					function action(modules,prodArray) {
+						for (const i of modules){
+							var x = document.getElementById("togglee_"+i);
+							if (x.style.display == 'block') {
+								x.style.display = 'none';
+							} else {
+								x.style.display = 'block';
+							}
+						}
+						for (const j of prodArray) {
+							var y = document.getElementById("togglee_"+j);
+							if (y.style.display == 'none') {
+									y.style.display = 'block';
+								} else {
+									y.style.display = 'none'
+								}
+						}
+					}
+				</script>
+			</h2>
+		    <div id="panelsStayOpen-collapse{{ module|cut:' ' }}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading{{ module|cut:' ' }}">
+		      <div class="accordion-body" style="overflow:auto">
+		      	<div class="grid-container" style="display: grid; grid-template-columns: auto auto auto auto;">
+				{% for product in products %}
+		      		{% if product.module == module %}
+		      			{% for cur_mod, cur_prod in user_comp.items %}
+		      				{% if cur_mod == module|stringformat:"s" %}
+		      					{% for item, cur_val in cur_prod.items %}
+		      						{% if item == product|stringformat:"s" %}
+									<div class="update_box" style="max-width: 350px;">
+										<div class="Main" style="display: block; text-align: left;">
+											<label >{{ product }}</label>
+										</div>
+										<div class="row">
+											<div class="col-4">
+												<div class="form-group floating">
+													<input type="text" maxlength="1" class="form-control floating" id="current{{ product|cut:' ' }}" name="current_{{ product }}" onkeyup="newFunc('{{ product|cutall }}', {{ products|refine_products }})" placeholder="Current" value="{{ cur_val.0 }}" aria-describedby="basic-addon1" >
+													<label>Current</label>
+												</div>
+											</div>
+											<div class="col-4">
+												<div class="form-group floating">
+													<input type="text" maxlength="1" class="form-control floating" id="target{{ product|cut:' ' }}" name="target_{{ product }}" onkeyup="newFunc('{{ product|cutall }}', {{ products|refine_products }})" placeholder="Target" value="{{ cur_val.1 }}" aria-describedby="basic-addon1" >
+													<label>Target</label>
+													<script>
+													var array = ['x', '0', '1', '2', '3', '4'];
+														function newFunc(idName, prodArray) {
+															let alert = document.getElementById("message");
+															let update_competency = document.getElementById("update_button");
+															let curTextbox = document.getElementById("current"+idName);
+															let tarTextbox = document.getElementById("target"+idName);
+															let c_value = curTextbox.value;
+															let t_value = tarTextbox.value;
+															if (array.includes(c_value.toString())) {
+																curTextbox.style.borderColor = 'green';
+																curTextbox.style.borderWidth = "thin medium thick";
+															} else {
+																curTextbox.style.borderColor = 'red';
+																curTextbox.style.borderWidth = "thin medium thick";
+															}
+															if (array.includes(t_value.toString())) {
+																tarTextbox.style.borderColor = 'green';
+																tarTextbox.style.borderWidth = "thin medium thick";
+															} else {
+																tarTextbox.style.borderColor = 'red';
+																tarTextbox.style.borderWidth = "thin medium thick";
+															}
+															for (const i of prodArray) {
+																let CurBox = document.getElementById("current"+i);
+																let TarBox = document.getElementById("target"+i);
+																let Cur_val = CurBox.value;
+																let Tar_val = TarBox.value;
+																if (array.includes(Cur_val.toString()) && array.includes(Tar_val.toString())) {
+																	update_competency.disabled = false;
+																	alert.style="visibility: hidden"
+																} else {
+																	update_competency.disabled = true;
+																	alert.style="visibility: visible"
+																	break;
+																}
+															}
+														}
+													</script>
+												</div>
+												<div class="Main" style="text-align:right;">
+											{% if user.is_manager %}
+												<div id="togglee_{{ product|cut:' ' }}" style="display: none;">
+													<a href="{% url 'comp_p_delete_form' product.id %}" onclick="return confirm('Are you sure you want to delete this product?');" type="button" class="form-check-input" style="text-align:right;top:5px;left:130px" ><i class='bx bxs-x-square bx-tada bx-rotate-90' style='color:#f10f0f;font-size: 24px' ></i></a>
+												</div>
+											{% endif %}
+												</div>
+											</div>
+										</div>
+									</div>
+							      	{% endif %}
+					      		{% endfor %}
+					      	{% endif %}
+				      	{% endfor %}
+			      	{% endif %}
+		      	{% endfor %}
+				</div>
+			   </div>
+		    </div>
+		  </div>
+		  {% endfor %}
+		</div>
+		<input id="update_button" type="submit" value="Update Competency" class="btn btn-primary btn-lg btn-block"/>
+	</div>
+</form>
+<br>
+<style>
+@media screen and (min-width:500px) {
+.box{
+height: 100%;
+max-width:75%;
+margin: 0 auto;
+}
+}
+</style>
+<script>
+	$("#expand-collapse").click(function(){
+
+    if ($(this).data("closedAll")) {
+        $(".accordion-collapse").collapse("show");
+    }
+    else {
+        $(".accordion-collapse").collapse("hide");
+    }
+
+    // save last state
+    $(this).data("closedAll",!$(this).data("closedAll"));
+});
+
+// init with all closed
+$("#expand-collapse").data("closedAll",true);
+</script>
+
+{% endblock %}

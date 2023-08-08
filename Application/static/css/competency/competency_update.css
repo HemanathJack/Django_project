@@ -1,0 +1,83 @@
+.alert {
+  position: fixed;
+  background-color: #f44336;
+  color: white;
+  margin: auto;
+  padding: 15px;
+  transform: translate(1px,-85%) scale(0.80);
+  overflow:hidden;
+  left: 26%;
+  font-size: 20px;
+  z-index: 999;
+}
+.form-group.floating>label {
+    bottom: 34px;
+    left: 8px;
+    position: relative;
+    background-color: white;
+    padding: 0px 5px 0px 5px;
+    font-size: 0.9em;
+    transition: 0.1s;
+    pointer-events: none;
+    font-weight: 500 !important;
+    transform-origin: bottom left;
+}
+
+.form-control.floating:focus~label{
+    transform: translate(1px,-85%) scale(0.80);
+    opacity: .8;
+    color: #005ebf;
+}
+
+.form-control.floating:valid~label{
+    transform-origin: bottom left;
+    transform: translate(1px,-85%) scale(0.80);
+    opacity: .8;
+}
+.right {
+  position: absolute;
+  right: 0px;
+  width: 300px;
+  padding: 10px;
+}
+  .grid-container {
+    display: grid;
+    width: 1300px;
+    margin: auto;
+    grid-template-columns: auto auto auto;
+    gap: 5px;
+    background-color: #ffffff;
+    padding: 5px;
+  }
+
+  .grid-container > div {
+    text-align: center;
+    font-size: 15px;
+  }
+
+  .navbar {
+  	background-color: white;
+  }
+
+  .form-inline {
+  	margin: 20px;
+  }
+
+  #members_card {
+  	width: 400px;
+  	height: 150px;
+  	background-color: rgb(220,220,220, 0.2);
+  	border-radius: 10%;
+  }
+  .alert {
+	  position: fixed;
+	  background-color: #f44336;
+	  color: white;
+	  margin: auto;
+	  padding: 15px;
+	  transform: translate(1px,-85%) scale(0.80);
+	  overflow:hidden;
+	  left: 26%;
+	  font-size: 20px;
+	  z-index: 999;
+	}

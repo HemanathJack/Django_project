@@ -1,0 +1,25 @@
+{% extends 'sidebar.html' %}
+{% block content %}
+{% load static %}
+{% load custom_tags %}
+<style>
+.center {
+  margin: auto;
+  width: 60%;
+  padding: 10px;
+}
+</style>
+<title>Add Trainings</title>
+<h1 style="margin: 20px 20px">Add Trainings Events</h1><hr><br>
+<div class="center">
+    <form role="form" method="POST" action="">
+        {% csrf_token %}
+        {{add_training.as_p}}
+        <div class="form-group">
+            <div>
+                <input type="submit" class="btn btn-primary" name="submit_training" value="Add Training">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

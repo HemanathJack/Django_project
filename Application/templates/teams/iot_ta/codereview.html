@@ -1,0 +1,301 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+{% load static %}
+{% load custom_tags %}
+
+<title>Code Review Tracking</title>
+
+<link href="{% static 'css/teams/iot_ta/style.css' %}" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="http://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" crossorigin="anonymous">
+
+<link rel="stylesheet" href="{% static 'css/teams/iot_ta/codereview.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/teams/iot_ta/iot_home.css' %}">
+
+<h1> Code Review Tracking </h1><hr>
+
+<div class="overlay"></div>
+<div id="loading" style="display: none;">
+<div class="boxes">
+  <div class="box">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+  </div>
+  <div class="box">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="box">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="box">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
+<div class="loading-text" style="display: none; z-index: 999;"><strong>Please wait this will take few minutes...</strong></div>
+</div>
+
+<div class="container" id="iot_users_crt">
+  {% for user, data in overall.items %}
+  	{% for details in user_details %}
+  		{% if details|stringformat:"s" in user|stringformat:"s" %}
+  		<div class="accordion" id="accordionPanelsStayOpenExample">
+	  		<div class="accordion-item">
+	    		<h2 class="accordion-header" id="panelsStayOpen-heading{{ user }}">
+	      			<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ user }}" aria-expanded="false" aria-controls="panelsStayOpen-collapse{{ user }}">{{ details.first_name }} {{ details.last_name }}</button>
+	    		</h2>
+	    		<div id="panelsStayOpen-collapse{{ user }}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading{{ user }}">
+		      		<div class="accordion-body"style="overflow: auto;">
+	    	    		<table class="table table-bordered" style="text-align: center; overflow-x:scroll">
+						    <thead>
+						      <tr>
+						        <th style="overflow: auto;"scope="col">Total Reviews</th>
+						        <th style="overflow: auto;"scope="col">Open</th>
+						        <th style="overflow: auto;"scope="col">Merged</th>
+						        <th style="overflow: auto;"scope="col">Declined</th>
+								<th style="overflow: auto;"scope="col">Fixbroken</th>
+						        <th style="overflow: auto;"scope="col">Min Days</th>
+						        <th style="overflow: auto;"scope="col">Max Days</th>
+						      </tr>
+							  <style>
+								  tr td {
+										border: solid 1px #000;
+										overflow: auto;
+										white-space: nowrap;
+										overflow: hidden;
+										max-width: 300px;
+									}
+							  </style>
+						      <tr>
+						      	<td>{{ data.total_cases }}</td>
+						  		<td><a href="https://scm.kone.com/kone/projects/rellab/reviews?creator={{ user|stringformat:'s' }}" target ="_blank">{{ data.open_cases }}</a></td>
+						  		<td><a href="https://scm.kone.com/kone/projects/rellab/reviews?creator={{ user|stringformat:'s' }}&state=merged" target ="_blank">{{ data.merged_cases }}</a></td>
+						  		<td><a href="https://scm.kone.com/kone/projects/rellab/reviews?creator={{ user|stringformat:'s' }}&state=closed" target ="_blank">{{ data.declined_cases }}</a></td>
+						  		<td><button type="button"  data-bs-toggle="modal" data-bs-target="#examplefix{{ details|stringformat:'s' }}{{ user|stringformat:'s' }}" style="background-color: transparent; border: none;">
+									{{ data.fixbroken }}</button></td>
+								<td>{{ data.min_standby }}</td>
+						  		<td><button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal{{ details|stringformat:'s' }}{{ user|stringformat:'s' }}" style="background-color: transparent; border: none;">
+									  {{ data.max_standby }}
+									</button>
+								</td>
+
+						      	<!-- Modal for overall max withstand -->
+								<div class="modal fade" id="exampleModal{{ details|stringformat:'s' }}{{ user|stringformat:'s' }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ details|stringformat:'s' }}{{ user|stringformat:'s' }}" aria-hidden="true">
+								  <div class="modal-dialog">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <h4 class="modal-title fs-5" id="exampleModalLabel{{ details|stringformat:'s' }}{{ user|stringformat:'s' }}">Review Title</h4>
+								        <i class='bx bx-x' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 30px;"></i>
+								      </div>
+								      <div class="modal-body">
+								        <div>{{ data.max_review_name }}</div><br>
+								        <a href="https://scm.kone.com/kone/projects/rellab/reviews/{{ data.max_review_name | split1stelement:' ' }}" target ="_blank">Show in SCM &raquo;</a>
+								      </div>
+								    </div>
+								  </div>
+								</div>
+
+						      </tr>
+						    </thead>
+						</table>
+
+												      	
+						<!-- Modal for fix broken cases -->
+						<div class="modal fade" id="examplefix{{ details|stringformat:'s' }}{{ user|stringformat:'s' }}" tabindex="-1" aria-labelledby="examplefixLabel{{ details|stringformat:'s' }}{{ user|stringformat:'s' }}" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+								<h4 class="modal-title fs-5" id="examplefixLabel{{ details|stringformat:'s' }}{{ user|stringformat:'s' }}">Fix Broken Cases</h4>
+								<i class='bx bx-x' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 30px;"></i>
+								</div>
+								<div class="modal-body modal-lg">
+									<table class="table">
+										<thead>
+										  <tr>
+											<th scope="col">#</th>
+											<th scope="col">Title</th>
+											<th scope="col">Link</th>
+										  </tr>
+										</thead>
+										<tbody>
+										{% for review in data.fixbroken_cases %}
+										  <tr>
+											<th scope="row">{{ forloop.counter }}</th>
+											<td>{{ review }}</td>
+											<td><a href="https://scm.kone.com/kone/projects/rellab/reviews/{{ review | split1stelement:' ' }}" target ="_blank">Show in SCM &raquo;</a>
+											</td>
+										  </tr>
+										{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+							</div>
+						</div>
+
+						<div>List all reviews more than 5 days - <button type="button" data-bs-toggle="modal" data-bs-target="#Backdrop{{ user|stringformat:'s' }}" style="background-color: transparent; border: none; color: blue;">Show all &raquo;</button></div><br>
+
+						<!-- Modal to list all the code reviews greater than 5 days -->
+						<div class="modal fade" id="Backdrop{{ user|stringformat:'s' }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="BackdropLabel{{ user|stringformat:'s' }}" aria-hidden="true">
+						  <div class="modal-dialog modal-lg">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <h5 class="modal-title fs-5" id="BackdropLabel{{ user|stringformat:'s' }}">Reviews withstanded more than 5 days</h5>
+						        <i class='bx bx-x' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 30px;"></i>
+						      </div>
+						      <div class="modal-body" style="overflow: scroll; max-height: 800px;">
+						        <span>Total - {{ data.all_max_reviews|length }}</span>
+						        <table class="table">
+						        	<tr>
+						        		<th scope="col">Title</th>
+						        		<th scope="col">Days</th>	
+						        	</tr>
+						        	{% for title, days in data.all_max_reviews.items %}
+						        	<tr>
+						        		<td><a href="https://scm.kone.com/kone/projects/rellab/reviews/{{ title | split1stelement:' ' }}" target ="_blank">{{ title }}</a></td>
+						        		<td>{{ days }}</td>
+						        	</tr>
+						        	{% endfor %}
+						        	
+						        </table>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+
+						<main>
+							{% for year in data.monthwise %}    
+						    <div class="faqs-grid">
+						        <div class="faqs-item ">
+						            {% if 'max_days' != year and 'months' not in year %}
+						            <div class="faqs-title" href="#custom">
+						                {{ year }} | Total Reviews - {{ data.monthwise | keyvalue:year }}
+						            </div>
+						            <div class="faqs-content" style="overflow: auto;">
+						                <div class="faqs-content-inside">
+				                    		{% for year_max, month_data in data.monthwise.max_days.items %}
+				                    			{% if year_max == year %}
+											<tbody class="tbodyy">
+				                    		<table class="table table-bordered" id="year_wise_table">
+
+				                    				<tr>
+				                    					<th scope="col">Month</th>
+				                    					{% for month in month_data %}
+				                    						{% if 'title' not in month %}	
+				                    					<td scope="col">{{ month }}</td>
+				                    						{% endif %}
+				                    					{% endfor %}		
+				                    				</tr>
+
+				                    				<tr>
+				                    					{% for year, data in data.monthwise.items %}
+				                    						{% if 'months' in year and year_max in year %}
+				                    					<th scope="col">No. of Reviews</th>
+				                    							{% for month, value in data.items %}		
+				                    					<td scope="col">{{ value }}</td>
+				                    							{% endfor %}
+				                    						{% endif %}
+				                    					{% endfor %}
+				                    				</tr>
+
+				                    				<tr>
+				                    					<th scope="col">Max days</th>
+				                    					{% for month, value in month_data.items %}		
+				                    						{% if 'title' not in month %}
+				                    					<td scope="col"><button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal{{ details|stringformat:'s' }}{{ month }}" style="background-color: transparent; border: none;">
+														  {{ value }}
+														</button></td>
+															{% endif %}
+				                    					{% endfor %}		
+				                    				</tr>
+
+				                    				{% for month, value in month_data.items %}		
+				                    					{% if 'title' in month %}
+				                    						{% if value %}
+						                    				<!-- Modal for monthwise in sub accordion-->
+															<div class="modal fade" id="exampleModal{{ details|stringformat:'s' }}{{ month|split1stelement:'_' }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ details|stringformat:'s' }}{{ month|split1stelement:'_' }}" aria-hidden="true">
+															  <div class="modal-dialog">
+															    <div class="modal-content">
+															      <div class="modal-header">
+															        <h4 class="modal-title fs-5" id="exampleModalLabel{{ details|stringformat:'s' }}{{ month|split1stelement:'_' }}" style="color: black;">Review Title</h4>
+															        <i class='bx bx-x' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 30px;"></i>
+															      </div>
+															      <div class="modal-body"  style="color: black;">
+															        <div>{{ value }}</div><br>
+															        <a href="https://scm.kone.com/kone/projects/rellab/reviews/{{ value | split1stelement:' ' }}" target ="_blank">Show in SCM &raquo;</a>
+															      </div>
+															    </div>
+															  </div>
+															</div>
+															{% endif %}
+														{% endif %}
+				                    				{% endfor %}
+
+
+				                    		</table>
+				                    			</tbody>
+											{% endif %}
+				                    		{% endfor %}
+						                </div>
+						            </div>
+						            {% endif %}
+						        </div>
+						    </div>
+							{% endfor %}
+						</main>
+	      			</div>
+	    		</div>
+	  		</div>
+		</div>
+  		{% endif %}
+  	{% endfor %}  
+  {% endfor %}
+</div>
+
+<script type="text/javascript">
+var acc = document.getElementsByClassName('faqs-title');
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener('click', function () {
+        this.classList.toggle('active');
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+            panel.style.maxHeight = null;
+        } else {
+            panel.style.maxHeight = panel.scrollHeight + 'px';
+        }
+    });
+}
+
+
+window.addEventListener("beforeunload", function () {
+    document.querySelector('#loading').style.display = "block";
+    document.querySelector('.overlay').style.display = "block";
+    document.querySelector('.loading-text').style.display = "block";
+});
+
+</script>
+<style>
+@media screen and (min-width:400px) {
+.container{
+height: 100%;
+max-width:75%;
+margin: 0 auto;
+}
+}
+
+</style>
+
+{% endblock %}

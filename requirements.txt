@@ -1,0 +1,14 @@
+Django==4.1.2
+djangorestframework==3.14.0
+django-crispy-forms==1.14.0
+django-widget-tweaks==1.4.12
+paramiko==2.11.0
+django-filter==22.1
+openpyxl==3.0.4
+mime
+pytz
+DateTime
+robotframework-sshlibrary==3.4.0
+requests==2.22.0
+regex
+cryptography==3.4.7

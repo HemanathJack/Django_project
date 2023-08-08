@@ -1,0 +1,125 @@
+{% extends 'sidebar.html' %}
+
+{% block content %}
+{% load static %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+<link href="{% static 'css/teams/iot_ta/style.css' %}" rel="stylesheet">
+<link href="{% static 'css/teams/iot_ta/iot_home.css' %}" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<title>IOT Home</title>
+
+<h1> IOT TA HOME </h1>
+<div class="navbar bg-light px-3 mb-3">
+  <a class="navbar-brand">Description</a>
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link" href="#">See Confluence</a>
+      </li>
+    </ul>
+</div>
+<div data-bs-spy="scroll" data-bs-target="navbar-example2" data-bs-root-margin="0px 0px -80%" data-bs-smooth-scroll="true" class="scrollspy-example bg-light p-3 rounded-2" tabindex="0" style="text-align: center;">
+  <p>IoT Test Automation team is part of the global Rellab KCE software release testing team. Current locations FRD and ITEC.</p>
+
+  <ul style="margin-left: 30px; list-style: none;"><strong>Responsibility</strong>
+    <li>End to End testing of Kone IoT features in UAT(QA) introduced from feature teams</li>
+    <li>Dependencies visualization</li>
+    <li>Software release testing of Kone IoT products like for example Kone Connection 120/210</li>
+    <li>Kone API testing with real devices (Cloud API)</li>
+    <li>E-Link testing</li>
+    <li>Provide support for development teams for e.g. debugging and integration</li>
+  </ul>    
+</div><br>
+
+
+<div class="overlay"></div>
+<div id="loading" style="display: none;">
+<div class="boxes">
+  <div class="box">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+  </div>
+  <div class="box">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="box">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="box">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
+<div class="loading-text" style="display: none; z-index: 999;"><strong>Please wait this will take few minutes...</strong></div>
+</div>
+
+<div class="container">
+  <div class="p-3 m-0 border-0 bd-example">
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            <strong>Automation Test Execution</strong>
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action">List Test Cases</a>
+            <a href="#" onclick="showLoading()" class="list-group-item list-group-item-action">Environment Details</a>
+            <a href="#" onclick="showLoading()" class="list-group-item list-group-item-action">Code Review Tracking</a>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <strong>Lab Equipements</strong>
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <strong style="color: red;">None</strong>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <strong>Work Flow Management</strong>
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <strong style="color: red;">None</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showLoading() {
+  // Show the loading icon
+  document.getElementById("loading").style.display = "block";
+  document.getElementsByClassName("overlay")[0].style.display = "block";
+  document.getElementsByClassName("loading-text")[0].style.display = "block";
+  
+  // Hide the button
+  document.getElementById("click-me-button").style.display = "none";
+}
+</script>
+
+{% endblock %}

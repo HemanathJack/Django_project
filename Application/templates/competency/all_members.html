@@ -1,0 +1,47 @@
+{% extends 'sidebar.html' %}
+
+{% block content %}
+{% load static %}
+{% load custom_tags %}
+{% load crispy_forms_tags %}
+<title>Competency Mapping</title>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/competency/list_members.css' %}">
+
+<h1 style="padding: 10px;">COMPETENCY DATA</h1>
+<hr>
+
+<nav class="navbar" style="margin-right: 50px;">
+  	<form class="form-inline">
+    	<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    	<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+	<a class="btn btn-success" style="display: inline-flex; margin: 0 10px; padding: 2px 8px; float: right;" href="{% url 'cm_excel' %}" name="cm_excel">Export to Excel</a>
+</nav>
+
+
+<div class="grid-container">
+	{% for member, designation in members.items %}
+		{% if member == 'Site Admin' %}
+		{% else %}
+		<div class="card" id="members_card" style="height: auto;">
+			<div class="row">
+				<div class="col-sm-1">
+					<img src="{% static 'media/avatar.jpg' %}" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%; position: absolute; margin-left:10px; margin-top: 15px;">
+				</div>
+				<div class="col-sm-12" style="right: -30px;">
+					<div class="card-body" style="margin-left:40px;">
+						<h5 class="card-title">{{ member }}</h5>
+						<h6 class="card-subtitle mb-2 text-muted">{{ designation }}</h6>
+						<h6>Last Updated: {{ modified_date|keyvalue:member }}</h6>
+						<a class="card-link" type=button href="{% url 'competency_view_user' individual=member %}">Show &raquo;</a>
+					</div>
+		  		</div>
+		  	</div>
+		</div>
+		{% endif %}
+	{% endfor %}
+</div>
+<br/><br/><br/>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'sidebar.html' %}
+
+{% block content %}
+{% load static %}
+<title>TA Dashboard</title>
+
+<h1 style="margin: 20px 20px"> WELCOME TO DASHBOARD! {{ user.first_name }} {{ user.last_name }} </h1><hr>
+<div class="album">
+  <div class="container">
+    <div class="card mb-3" style="max-width: 1200px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="{% static 'media/iot/iot_dashboard.avif' %}" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title"><strong>IOT TEST AUTOMATION</strong></h5>
+            <p class="card-text">IoT Test Automation team is part of the global Rellab KCE software release testing team. Current locations FRD and ITEC.</p>
+            <a  href="{% url 'iot_ta' %}" type="button" style="width: 300px;" class="btn btn-sm btn-info">Go To &raquo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3" style="max-width: 1200px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="{% static 'media/lce/lce_dashboard.jpeg' %}" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title"><strong>KCE TEST AUTOMATION</strong></h5>
+            <p class="card-text">KCE Test Automation team is part of the global Rellab KCE software release testing team. Current locations FRD and ITEC. Team is working as agile methodologies with CI/CD and daily work is based on scrum principles.</p>
+            <a  href="#" type="button" style="width: 300px;" class="btn btn-sm btn-info">Go To &raquo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <img  src="{% static 'media/home.gif' %}" style="position: absolute; transform: scale(0.5); top: 420px;display:flex; right: 300px;">
+</div>
+{% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert" style="position: absolute; width: 50%; top: 150px; left: 470px; text-align:center;">
+        <strong>Oops!</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'sidebar.html' %}
+{% block content %}
+{% load static %}
+{% load custom_tags %}
+<title>Trainings</title>
+<h1 style="margin: 20px 20px">Trainings</h1><hr><br>
+<nav class="navbar bg-light">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">Upcoming Trainings</span>
+    </div>
+</nav>
+<a class="btn btn-dark" type="button" href="{% url 'dashboard' %}" style="position: absolute; top: 80px; right: 30px; color: white; vertical-align: middle;"><i class='bx bx-arrow-back' id='back_icon'></i> back</a>
+<br/>
+<div class="container" id="upcomming_tainings">
+    {% for training in trainings.not_completed %}
+        <div class="card">
+            <h5 class="card-header">{{ training.training_name }}</h5>
+            <div class="card-body">
+            <h5 class="card-title">{{ training.training_description }}</h5>
+            <p class="card-text">
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <b>Date & Time:</b>
+                    </div>
+                    <div class="col-sm-2 col-md-3 col-lg-3">
+                        {{ training.training_date }}
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <b>Training Duration:</b>
+                    </div>
+                    <div class="col-sm-2 col-md-3 col-lg-3">
+                        {{ training.training_duration }} Hour
+                    </div>
+                </div>
+            </p>
+            <a href="{{ training.training_link }}" target="_blank" class="btn btn-primary">Join <i class='bx bxl-microsoft-teams' style="font-size: 20px;"></i></a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<a type="button" href="{% url 'add_training' %}" class="btn btn-success" style="color: white; position: absolute; right: 30px;">Add New Training Event</a>
+<br><br>
+<nav class="navbar bg-light">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">Trainings Completed</span>
+    </div>
+</nav>
+<br/>
+<div class="container" id='completed_tainings'>
+    {% for training in trainings.completed %}
+        <div class="card">
+            <h5 class="card-header">{{ training.training_name }}</h5>
+            <div class="card-body">
+            <h5 class="card-title">{{ training.training_description }}</h5>
+            <p class="card-text">
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <b>Date & Time:</b>
+                    </div>
+                    <div class="col-sm-2 col-md-3 col-lg-3">
+                        {{ training.training_date }}
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <b>Training Duration:</b>
+                    </div>
+                    <div class="col-sm-2 col-md-3 col-lg-3">
+                        {{ training.training_duration }} Hour
+                    </div>
+                </div>
+            </p>
+            <disabled href="#" class="btn btn-primary">Join <i class='bx bxl-microsoft-teams' style="font-size: 20px;"></i></disabled></a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<style>
+/* Fading out the completed trainings */
+#completed_tainings {
+    opacity: 0.6;
+}
+</style>
+{% endblock %}

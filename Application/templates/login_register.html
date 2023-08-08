@@ -1,0 +1,88 @@
+{% load static %}
+{% include "base.html" %}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/login_register/login.css' %}">
+
+
+
+<title>Login</title>
+<link rel="shortcut icon" type="image/png" href="{% static 'media/icon.png' %}"/>
+<body>
+
+  <section class="login">
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert" style="position: absolute; width: 50%; top: 100px; left: 470px; text-align:center;">
+        <strong>Oops!</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+    {% endif %}
+    <div class="login_box">
+      <div class="left">
+        <div class="contact">
+          <form action="" method="POST">
+            {% csrf_token %}
+            <h3>SIGN IN</h3>
+            <input type="text" placeholder="USERNAME" name="Username">
+            <input type="password" id="password-field" placeholder="PASSWORD" name="Password">
+            <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" style="width: auto; font-style: italic;">  Show password</span>
+            <button class="submit" type="submit">LET'S GO</button>
+          </form>
+        </div>
+      </div>
+      <div class="right">
+        <div class="right-text">
+          <h2><img src="{% static 'media/kone.png' %}" style="width: 100px; height: auto; "></h2>
+          <h5><strong>TEST AUTOMATION</strong></h5>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+<style>
+
+
+@media screen and (max-width: 800px) {
+
+.alert{
+min-height:auto;
+   position: fixed;
+   height:5%;
+    top: 50%;
+    left: 70%;
+    transform: translate(-60%, -70%);
+    min-width:auto;
+
+}
+
+
+
+div{
+margin:0;
+padding:0;
+min-width: 100%;
+min-height: 60%;
+margin: 0 auto;
+}
+}
+
+
+</style>
+
+<script>
+$(".toggle-password").click(function() {
+
+$(this).toggleClass("fa-eye fa-eye-slash");
+var input = $($(this).attr("toggle"));
+if (input.attr("type") == "password") {
+  input.attr("type", "text");
+} else {
+  input.attr("type", "password");
+}
+});
+</script>  
